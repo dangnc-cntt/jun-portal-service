@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 
 @RestController
@@ -30,7 +31,7 @@ public class UserController extends BaseController {
 
   @GetMapping("{id}")
   public ResponseEntity<UserResponse> getUserById(
-      @PathVariable String id, @Valid @RequestHeader(name = "x-jun-portal-token") String token)
+      @PathVariable Integer id, @Valid @RequestHeader(name = "x-jun-portal-token") String token)
       throws Exception {
     return ResponseEntity.ok(userService.getById(id));
   }
@@ -38,14 +39,15 @@ public class UserController extends BaseController {
   @PostMapping()
   public ResponseEntity<Boolean> create(
       @Valid @RequestBody UserDTO userDTO,
-      @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
+      @Valid @RequestHeader(name = "x-jun-portal-token") String token)
+      throws AuthenticationException {
     return ResponseEntity.ok(
         userService.create(userDTO, authService.validateToken(token).getUserRole()));
   }
 
   @PutMapping("{id}")
   public ResponseEntity<String> update(
-      @PathVariable String id,
+      @PathVariable Integer id,
       @Valid @RequestBody UserDTO userDTO,
       @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
     return ResponseEntity.ok(
@@ -54,7 +56,7 @@ public class UserController extends BaseController {
 
   @DeleteMapping("{id}")
   public String delete(
-      @PathVariable String id, @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
+      @PathVariable Integer id, @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
     return userService.delete(id, authService.validateToken(token).getUserRole());
   }
 }

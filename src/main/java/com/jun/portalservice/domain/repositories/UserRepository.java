@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<User, Integer> {
   User findUserByUsername(String username);
 
   Page<User> findUsersByUsername(String username, Pageable pageable);
 
-  User findUserById(int id);
+  User findUserById(Integer id);
 
   List<User> findUserByRole(UserRole role);
 

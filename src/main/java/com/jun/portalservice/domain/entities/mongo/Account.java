@@ -5,7 +5,6 @@ import com.jun.portalservice.domain.entities.types.Gender;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -16,9 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Account extends BaseEntity {
 
-  @Transient public static final String REFERRAL_SEQUENCE_NAME = "account_sequence";
-
-  @Id private String id;
+  @Id private Integer id;
 
   @Field(name = "username")
   private String username;
@@ -29,7 +26,7 @@ public class Account extends BaseEntity {
   @Field(name = "full_name")
   private String fullName;
 
-  @Field(name = "phone_number")
+  @Field(name = "phone")
   private String phoneNumber;
 
   @Field(name = "email")
@@ -49,7 +46,4 @@ public class Account extends BaseEntity {
 
   @Field(name = "state")
   private AccountState state;
-
-  @Field(name = "created_by")
-  private Long createdBy;
 }

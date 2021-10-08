@@ -1,8 +1,6 @@
 package com.jun.portalservice.app.dtos;
 
 import com.jun.portalservice.domain.entities.types.Gender;
-import com.jun.portalservice.domain.entities.types.UserRole;
-import com.jun.portalservice.domain.entities.types.UserState;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -21,10 +19,6 @@ public class UserDTO {
   @NotNull
   @Size(max = 50, min = 6)
   private String password;
-
-  @NotNull private UserRole role;
-
-  @NotNull private UserState state;
 
   @NotNull private String email;
 

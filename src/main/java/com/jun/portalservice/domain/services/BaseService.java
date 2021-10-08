@@ -2,6 +2,7 @@ package com.jun.portalservice.domain.services;
 
 import com.jun.portalservice.domain.ModelMapper;
 import com.jun.portalservice.domain.entities.mongo.Sequence;
+import com.jun.portalservice.domain.repositories.CategoryRepository;
 import com.jun.portalservice.domain.repositories.ConfigRepository;
 import com.jun.portalservice.domain.repositories.UserRepository;
 import com.jun.portalservice.domain.storages.*;
@@ -25,7 +26,8 @@ public class BaseService {
 
   @Autowired protected AccountStorage accountStorage;
 
-  @Autowired protected GiftSetStorage giftSetStorage;
+  @Autowired protected CategoryStorage categoryStorage;
+  @Autowired protected CategoryRepository categoryRepository;
   @Autowired protected ConfigRepository configRepository;
   @Autowired protected BannerStorage bannerStorage;
   @Autowired protected ConfigStorage configStorage;

@@ -1,6 +1,6 @@
 package com.jun.portalservice.domain.entities.types;
 
-public enum UserRole {
-  ADMIN,
-  USER
+public enum CategoryState {
+  ACTIVE,
+  NOT_ACTIVE
 }

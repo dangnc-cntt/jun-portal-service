@@ -8,13 +8,14 @@ import com.jun.portalservice.domain.entities.types.UserRole;
 import com.jun.portalservice.domain.entities.types.UserState;
 import com.jun.portalservice.domain.exceptions.AccountAlreadyExistsException;
 import com.jun.portalservice.domain.exceptions.AccountNotExistsException;
-import com.jun.portalservice.domain.exceptions.BadRequestException;
 import com.jun.portalservice.domain.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.naming.AuthenticationException;
 
 @Service
 @Log4j2
@@ -32,24 +33,24 @@ public class UserService extends BaseService {
     return response;
   }
 
-  public UserResponse getById(String id) throws Exception {
+  public UserResponse getById(int id) throws Exception {
     User user = userRepository.findById(id).orElse(null);
     if (user == null) {
-      new Exception("Not found with id " + id);
+      throw new Exception("Not found with id " + id);
     }
     return modelMapper.toUserResponse(user);
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
-  public boolean create(UserDTO userDTO, UserRole role) {
+  public boolean create(UserDTO userDTO, UserRole role) throws AuthenticationException {
 
     if (!role.equals(UserRole.ADMIN)) {
-      throw new BadRequestException("User must be ADMIN!");
+      throw new AuthenticationException();
     }
 
-    if (userDTO.getRole().equals(UserRole.ADMIN)) {
-      throw new BadRequestException("This account is not ADMIN!");
-    }
+    //    if (userDTO.getRole().equals(UserRole.ADMIN)) {
+    //      throw new BadRequestException("This account is not ADMIN!");
+    //    }
 
     User user = userRepository.findUserByUsername(userDTO.getUsername());
     if (user != null) {
@@ -59,13 +60,14 @@ public class UserService extends BaseService {
     user = modelMapper.toUser(userDTO);
     user.setId((int) generateSequence(User.SEQUENCE_NAME));
     user.setPassword(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)));
+    user.setRole(UserRole.USER);
     user.setState(UserState.ACTIVATED);
     userRepository.save(user);
     return true;
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
-  public String update(String id, UserDTO userDTO, UserRole role) {
+  public String update(Integer id, UserDTO userDTO, UserRole role) {
     if (!role.equals(UserRole.ADMIN)) {
       throw new ResourceNotFoundException("====Access rights: ADMIN");
     }
@@ -74,13 +76,14 @@ public class UserService extends BaseService {
       return "Not found with id " + id;
     } else {
       user = modelMapper.toUser(userDTO);
+      user.setId(id);
       userRepository.save(user);
       return "Update Successfully!";
     }
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
-  public String delete(String id, UserRole role) {
+  public String delete(Integer id, UserRole role) {
     if (!role.equals(UserRole.ADMIN)) {
       throw new ResourceNotFoundException("====Access rights: ADMIN");
     }
