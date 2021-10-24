@@ -1,62 +1,35 @@
 package com.jun.portalservice.app.controllers;
 
-import com.jun.portalservice.app.dtos.UserDTO;
+import com.jun.portalservice.app.dtos.UpdateUserDTO;
+import com.jun.portalservice.app.dtos.UserChangePasswordDTO;
 import com.jun.portalservice.app.responses.ProfileResponse;
 import com.jun.portalservice.app.responses.UserResponse;
-import com.jun.portalservice.domain.services.AuthService;
-import com.jun.portalservice.domain.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("v1/portal/users")
 public class UserController extends BaseController {
-  @Autowired private UserService userService;
-  @Autowired private AuthService authService;
 
   @GetMapping("profile")
   public ResponseEntity<ProfileResponse> getProfile(
       @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
-    return ResponseEntity.ok(userService.getProfile(authService.validateToken(token).getUserId()));
+    return ResponseEntity.ok(userService.getProfile(validateToken(token).getUserId()));
   }
 
-  @GetMapping()
-  public ResponseEntity<?> test() {
-    return ResponseEntity.ok("ok");
-  }
-
-  @GetMapping("{id}")
-  public ResponseEntity<UserResponse> getUserById(
-      @PathVariable Integer id, @Valid @RequestHeader(name = "x-jun-portal-token") String token)
-      throws Exception {
-    return ResponseEntity.ok(userService.getById(id));
-  }
-
-  @PostMapping()
-  public ResponseEntity<Boolean> create(
-      @Valid @RequestBody UserDTO userDTO,
-      @Valid @RequestHeader(name = "x-jun-portal-token") String token)
-      throws AuthenticationException {
-    return ResponseEntity.ok(
-        userService.create(userDTO, authService.validateToken(token).getUserRole()));
-  }
-
-  @PutMapping("{id}")
-  public ResponseEntity<String> update(
-      @PathVariable Integer id,
-      @Valid @RequestBody UserDTO userDTO,
+  @PutMapping()
+  public ResponseEntity<UserResponse> update(
+      @Valid @RequestBody UpdateUserDTO userDTO,
       @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
-    return ResponseEntity.ok(
-        userService.update(id, userDTO, authService.validateToken(token).getUserRole()));
+    return ResponseEntity.ok(userService.update(userDTO, validateToken(token).getUserId()));
   }
 
-  @DeleteMapping("{id}")
-  public String delete(
-      @PathVariable Integer id, @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
-    return userService.delete(id, authService.validateToken(token).getUserRole());
+  @PutMapping("change_password")
+  public ResponseEntity<UserResponse> changePass(
+      @Valid @RequestBody UserChangePasswordDTO userDTO,
+      @Valid @RequestHeader(name = "x-jun-portal-token") String token) {
+    return ResponseEntity.ok(userService.changePassword(userDTO, validateToken(token).getUserId()));
   }
 }

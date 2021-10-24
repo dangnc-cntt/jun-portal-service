@@ -1,5 +1,6 @@
 package com.jun.portalservice.domain.entities.mongo;
 
+import com.jun.portalservice.app.dtos.UpdateUserDTO;
 import com.jun.portalservice.domain.entities.types.Gender;
 import com.jun.portalservice.domain.entities.types.UserRole;
 import com.jun.portalservice.domain.entities.types.UserState;
@@ -46,4 +47,14 @@ public class User extends BaseEntity {
 
   @Field(name = "gender")
   private Gender gender;
+
+  public void from(UpdateUserDTO userDTO) {
+    setUsername(userDTO.getUsername());
+    setFullName(userDTO.getFullName());
+    setEmail(userDTO.getEmail());
+    setPhone(userDTO.getPhone());
+    setAddress(userDTO.getAddress());
+    setAvatarUrl(userDTO.getAvatarUrl());
+    setGender(userDTO.getGender());
+  }
 }

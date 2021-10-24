@@ -1,5 +1,6 @@
 package com.jun.portalservice.domain.entities.mongo;
 
+import com.jun.portalservice.app.dtos.ProductDTO;
 import com.jun.portalservice.domain.entities.types.ProductState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -41,9 +43,6 @@ public class Product extends BaseEntity {
   @Field(name = "is_hot")
   private Boolean isHot;
 
-  @Field(name = "amount")
-  private Integer amount;
-
   @Field(name = "cost_price")
   private Float costPrice;
 
@@ -54,14 +53,23 @@ public class Product extends BaseEntity {
   private Float discount;
 
   @Field(name = "star")
-  private Float star;
+  private Float star = 0F;
 
   @Field(name = "created_by")
   private Integer createdBy;
 
-  @Field(name = "color_id")
-  private Integer colorId;
-
-  @Field(name = "size_id")
-  private Integer sizeId;
+  public void from(ProductDTO dto) {
+    setName(dto.getName());
+    List<String> list = dto.getImageUrls();
+    if (list != null) {
+      setImageUrls(new ArrayList<>(list));
+    }
+    setDescription(dto.getDescription());
+    setState(dto.getState());
+    setCategoryId(dto.getCategoryId());
+    setIsHot(dto.getIsHot());
+    setCostPrice(dto.getCostPrice());
+    setPrice(dto.getPrice());
+    setDiscount(dto.getDiscount());
+  }
 }

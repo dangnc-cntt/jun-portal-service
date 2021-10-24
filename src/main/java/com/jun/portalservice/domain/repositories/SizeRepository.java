@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface SizeRepository extends MongoRepository<Size, Integer> {
   Size findSizeById(Integer id);
 
-  Size findSizeByCode(String code);
+  Size findByName(String name);
 }

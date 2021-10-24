@@ -11,33 +11,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("v1/portal/ ")
+@RequestMapping("v1/portal/account")
 public class AccountController extends BaseController {
 
   @Autowired private AccountService accountService;
 
   @GetMapping()
-  public ResponseEntity<PageResponse<AccountResponse>> findAll(
-      @RequestHeader(name = "x-jun-portal-token") String token, Pageable pageable) {
+  public ResponseEntity<PageResponse<AccountResponse>> filter(
+      @RequestHeader(name = "x-jun-portal-token") String token,
+      @RequestParam(required = false) Integer accountId,
+      @RequestParam(required = false) String fullName,
+      @RequestParam(required = false) String phone,
+      Pageable pageable) {
     validateToken(token);
-    return ResponseEntity.ok(accountService.findAll(pageable));
+    return ResponseEntity.ok(accountService.filter(accountId, fullName, phone, pageable));
   }
 
-  @PutMapping("{accountId}/ban")
+  @GetMapping("{accountId}")
+  public ResponseEntity<AccountResponse> filter(
+      @RequestHeader(name = "x-jun-portal-token") String token,
+      @PathVariable("accountId") Integer accountId) {
+    validateToken(token);
+    return ResponseEntity.ok(accountService.findById(accountId));
+  }
+
+  @PutMapping("{accountId}")
   public ResponseEntity<AccountResponse> banAccount(
       @RequestHeader(name = "x-jun-portal-token") String token,
-      @PathVariable("accountId") String accountId) {
+      @RequestParam AccountState state,
+      @PathVariable("accountId") Integer accountId) {
     UserRole userRole = validateToken(token).getUserRole();
-    return ResponseEntity.ok(
-        accountService.updateStateUser(accountId, AccountState.BANNED, userRole));
+    return ResponseEntity.ok(accountService.updateStateUser(accountId, state, userRole));
   }
 
-  @PutMapping("{accountId}/reactive")
-  public ResponseEntity<AccountResponse> reactiveAccount(
-      @RequestHeader(name = "x-jun-portal-token") String token,
-      @PathVariable("accountId") String accountId) {
-    UserRole userRole = validateToken(token).getUserRole();
-    return ResponseEntity.ok(
-        accountService.updateStateUser(accountId, AccountState.ACTIVATED, userRole));
-  }
+  //  @PutMapping("{accountId}/reactive")
+  //  public ResponseEntity<AccountResponse> reactiveAccount(
+  //      @RequestHeader(name = "x-jun-portal-token") String token,
+  //      @PathVariable("accountId") String accountId) {
+  //    UserRole userRole = validateToken(token).getUserRole();
+  //    return ResponseEntity.ok(
+  //        accountService.updateStateUser(accountId, AccountState.ACTIVATED, userRole));
+  //  }
 }

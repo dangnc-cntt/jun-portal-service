@@ -15,7 +15,7 @@ public class AccountStorage extends BaseStorage {
     return account;
   }
 
-  public Account findAccountById(String accountId) {
+  public Account findAccountById(Integer accountId) {
     return accountRepository.findAccountById(accountId);
   }
 

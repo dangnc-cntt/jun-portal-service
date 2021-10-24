@@ -10,13 +10,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Data
 @NoArgsConstructor
 @Document(collection = "color")
-public class Color extends BaseEntity {
+public class Color {
   @Transient public static final String SEQUENCE_NAME = "color_sequence";
   @Id private Integer id;
 
   @Field(name = "name")
   private String name;
-
-  @Field(name = "value")
-  private String code;
 }

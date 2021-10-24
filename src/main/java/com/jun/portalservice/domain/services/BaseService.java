@@ -2,9 +2,7 @@ package com.jun.portalservice.domain.services;
 
 import com.jun.portalservice.domain.ModelMapper;
 import com.jun.portalservice.domain.entities.mongo.Sequence;
-import com.jun.portalservice.domain.repositories.CategoryRepository;
-import com.jun.portalservice.domain.repositories.ConfigRepository;
-import com.jun.portalservice.domain.repositories.UserRepository;
+import com.jun.portalservice.domain.repositories.*;
 import com.jun.portalservice.domain.storages.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -25,14 +23,20 @@ public class BaseService {
   @Autowired protected VoucherStorage voucherStorage;
 
   @Autowired protected AccountStorage accountStorage;
+  @Autowired protected AccountRepository accountRepository;
 
-  @Autowired protected CategoryStorage categoryStorage;
-  @Autowired protected CategoryRepository categoryRepository;
   @Autowired protected ConfigRepository configRepository;
   @Autowired protected BannerStorage bannerStorage;
   @Autowired protected ConfigStorage configStorage;
   @Autowired protected ModelMapper modelMapper;
   @Autowired private MongoOperations mongoOperations;
+  @Autowired protected ProductStorage productStorage;
+  @Autowired protected ProductRepository productRepository;
+  @Autowired protected ProductOptionRepository productOptionRepository;
+  @Autowired protected ColorRepository colorRepository;
+  @Autowired protected SizeRepository sizeRepository;
+  @Autowired protected CategoryStorage categoryStorage;
+  @Autowired protected CategoryRepository categoryRepository;
 
   public long generateSequence(String seqName) {
     Sequence counter =

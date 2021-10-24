@@ -16,7 +16,4 @@ public class Size {
 
   @Field(name = "name")
   private String name;
-
-  @Field(name = "value")
-  private String code;
 }

@@ -11,6 +11,8 @@ public class CategoryStorage extends BaseStorage {
   public Category save(Category category) {
     category = categoryRepository.save(category);
 
+    caching.put(CacheKey.genCategoryIdKey(category.getId()), category);
+
     List<Category> categories = categoryRepository.findAll();
     if (categories.size() > 0) {
       caching.put(CacheKey.genListCategoryKey(), categories);
@@ -24,6 +26,8 @@ public class CategoryStorage extends BaseStorage {
     if (categories != null && categories.size() > 0) {
       categories.removeIf(p -> p.getId().equals(categoryId));
     }
+    caching.del(CacheKey.genCategoryIdKey(categoryId));
+
     caching.put(CacheKey.genListCategoryKey(), categories);
   }
 }

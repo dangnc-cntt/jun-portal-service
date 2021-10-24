@@ -2,7 +2,8 @@ package com.jun.portalservice.domain.utils;
 
 public class CacheKey {
 
-  private static String prefix = "jun:portal";
+  private static final String prefix = "jun:portal";
+  private static final String junPrefix = "jun";
 
   public static String genSessionKey(String uuid) {
     return prefix + "_session:" + uuid;
@@ -25,10 +26,30 @@ public class CacheKey {
   }
 
   public static String genBannerConfigKey(String key) {
-    return prefix + "::config:banner:list" + key;
+    return junPrefix + "::config:banner:list" + key;
   }
 
   public static String genListCategoryKey() {
-    return prefix + "::category:list";
+    return junPrefix + "::category:list";
+  }
+
+  public static String genCategoryIdKey(int id) {
+    return junPrefix + "::category:" + id;
+  }
+
+  public static String genListProductByCategoryKey(int categoryId) {
+    return junPrefix + "::products:category:" + categoryId;
+  }
+
+  public static String genProductKey(int productId) {
+    return junPrefix + "::product:" + productId;
+  }
+
+  public static String genListProductIsHotKey() {
+    return junPrefix + "::products:hot";
+  }
+
+  public static String genListOptionProductIdKey(int productId) {
+    return junPrefix + "::options:product:" + productId;
   }
 }

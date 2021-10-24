@@ -7,6 +7,7 @@ import com.jun.portalservice.domain.entities.types.CategoryState;
 import com.jun.portalservice.domain.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class CategoryService extends BaseService {
     Query query = new Query();
     Criteria criteria = new Criteria();
     query.addCriteria(criteria.andOperator((andConditions.toArray(new Criteria[0]))));
+    query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
 
     Page<Category> categories = categoryRepository.findAll(query, pageable);
     return PageResponse.createFrom(categories);
