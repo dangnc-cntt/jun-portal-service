@@ -1,10 +1,7 @@
 package com.jun.portalservice.app.controllers;
 
 import com.jun.portalservice.domain.data.TokenInfo;
-import com.jun.portalservice.domain.services.AuthService;
-import com.jun.portalservice.domain.services.CategoryService;
-import com.jun.portalservice.domain.services.ProductService;
-import com.jun.portalservice.domain.services.UserService;
+import com.jun.portalservice.domain.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +11,8 @@ public class BaseController {
   @Autowired protected UserService userService;
   @Autowired protected AuthService authService;
   @Autowired protected ProductService productService;
+  @Autowired protected WarehouseReceiptService warehouseReceiptService;
+  @Autowired protected WarehouseExportService warehouseExportService;
 
   public TokenInfo validateToken(String token) {
     return authService.validateToken(token);

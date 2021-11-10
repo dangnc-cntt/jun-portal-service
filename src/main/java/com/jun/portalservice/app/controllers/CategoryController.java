@@ -48,7 +48,7 @@ public class CategoryController extends BaseController {
     return ResponseEntity.ok(categoryService.update(dto, categoryId));
   }
 
-  @DeleteMapping(path = "categoryId")
+  @DeleteMapping(path = "{categoryId}")
   public ResponseEntity<Boolean> delete(
       @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable int categoryId) {
     validateToken(token);

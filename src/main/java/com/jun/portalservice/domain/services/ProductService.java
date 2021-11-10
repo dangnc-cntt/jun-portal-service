@@ -36,6 +36,7 @@ public class ProductService extends BaseService {
       Integer categoryId, String code, String name, Boolean isHot, Pageable pageable) {
     List<Criteria> andConditions = new ArrayList<>();
 
+    andConditions.add(Criteria.where("id").ne(null));
     if (categoryId != null) {
       andConditions.add(Criteria.where("categoryId").is(categoryId));
     }
@@ -78,20 +79,31 @@ public class ProductService extends BaseService {
     product.setCreatedBy(userId);
 
     product = productStorage.save(product);
-
+    List<ProductOption> optionList = new ArrayList<>();
     if (dto.getOptionList().size() > 0) {
-      for (ProductOption option : dto.getOptionList()) {
-        option.setProductId(product.getId());
+      for (ProductDTO.ProductOptionDTO option : dto.getOptionList()) {
+        ProductOption productOption = new ProductOption();
+        productOption.setProductId(product.getId());
+        productOption.setId(
+            option.getId() == null
+                ? (int) generateSequence(ProductOption.SEQUENCE_NAME)
+                : option.getId());
+        productOption.setAmount(option.getAmount());
+        productOption.setColor(option.getColor());
+        productOption.setSize(option.getSize());
+        optionList.add(productOption);
       }
     }
-    dto.setOptionList(productOptionRepository.saveAll(dto.getOptionList()));
 
     ProductResponse response = modelMapper.toProductResponse(product);
-    response.setOptionList(dto.getOptionList());
+    response.setOptionList(optionList);
 
-    List<ProductOption> optionList = productOptionRepository.findByProductId(product.getId());
-    if (optionList != null) {
-      caching.put(CacheKey.genListOptionProductIdKey(product.getId()), optionList);
+    productOptionRepository.saveAll(optionList);
+
+    List<ProductOption> productOptionList =
+        productOptionRepository.findByProductId(product.getId());
+    if (productOptionList != null) {
+      caching.put(CacheKey.genListOptionProductIdKey(product.getId()), productOptionList);
     }
 
     return response;
@@ -103,21 +115,32 @@ public class ProductService extends BaseService {
     if (product == null) {
       throw new ResourceNotFoundException("Product with id: " + productId + " is exist!");
     }
+    ProductResponse response = new ProductResponse();
     product.from(dto);
     product = productStorage.save(product);
 
+    List<ProductOption> optionList = new ArrayList<>();
     if (dto.getOptionList().size() > 0) {
-      for (ProductOption option : dto.getOptionList()) {
-        option.setProductId(product.getId());
+      for (ProductDTO.ProductOptionDTO option : dto.getOptionList()) {
+        ProductOption productOption = new ProductOption();
+        productOption.setId(
+            option.getId() == null
+                ? (int) generateSequence(ProductOption.SEQUENCE_NAME)
+                : option.getId());
+        productOption.setProductId(product.getId());
+        productOption.setAmount(option.getAmount());
+        productOption.setColor(option.getColor());
+        productOption.setSize(option.getSize());
+        optionList.add(productOption);
       }
-    }
-    dto.setOptionList(productOptionRepository.saveAll(dto.getOptionList()));
-    ProductResponse response = modelMapper.toProductResponse(product);
-    response.setOptionList(dto.getOptionList());
-
-    List<ProductOption> optionList = productOptionRepository.findByProductId(product.getId());
-    if (optionList != null) {
-      caching.put(CacheKey.genListOptionProductIdKey(product.getId()), optionList);
+      //    dto.setOptionList(productOptionRepository.saveAll(dto.getOptionList()));
+      response = modelMapper.toProductResponse(product);
+      response.setOptionList(optionList);
+      productOptionRepository.saveAll(optionList);
+      List<ProductOption> options = productOptionRepository.findByProductId(product.getId());
+      if (options != null) {
+        caching.put(CacheKey.genListOptionProductIdKey(product.getId()), options);
+      }
     }
     return response;
   }
@@ -147,6 +170,24 @@ public class ProductService extends BaseService {
     return color;
   }
 
+  public Color findColorById(int colorId) {
+    Color color = colorRepository.findColorById(colorId);
+    if (color == null) {
+      throw new ResourceNotFoundException("No color found!");
+    }
+
+    return color;
+  }
+
+  public Size findSizeById(int sizeId) {
+    Size size = sizeRepository.findSizeById(sizeId);
+    if (size == null) {
+      throw new ResourceNotFoundException("No color found!");
+    }
+
+    return size;
+  }
+
   public Size createSize(SizeDTO dto) {
     Size size = sizeRepository.findByName(dto.getName());
     if (size != null) {
@@ -162,7 +203,7 @@ public class ProductService extends BaseService {
 
   public List<Size> getAllSize() {
     List<Size> sizes = sizeRepository.findAll();
-    if (sizes == null || sizes.size() > 0) {
+    if (sizes.size() < 1) {
       throw new ResourceNotFoundException("No size found!");
     }
     return sizes;
@@ -170,7 +211,7 @@ public class ProductService extends BaseService {
 
   public List<Color> getAllColor() {
     List<Color> colors = colorRepository.findAll();
-    if (colors == null || colors.size() > 0) {
+    if (colors.size() < 1) {
       throw new ResourceNotFoundException("No size found!");
     }
     return colors;

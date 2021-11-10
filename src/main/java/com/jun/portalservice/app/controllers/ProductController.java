@@ -81,4 +81,18 @@ public class ProductController extends BaseController {
     validateToken(token);
     return ResponseEntity.ok(productService.getAllColor());
   }
+
+  @GetMapping(path = "color/{colorId}")
+  public ResponseEntity<Color> findColorById(
+      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer colorId) {
+    validateToken(token);
+    return ResponseEntity.ok(productService.findColorById(colorId));
+  }
+
+  @GetMapping(path = "size/{sizeId}")
+  public ResponseEntity<Size> findSizeById(
+      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer sizeId) {
+    validateToken(token);
+    return ResponseEntity.ok(productService.findSizeById(sizeId));
+  }
 }

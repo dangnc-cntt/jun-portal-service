@@ -20,6 +20,8 @@ public class CategoryService extends BaseService {
   public PageResponse<Category> filter(
       Integer id, CategoryState state, String name, Pageable pageable) {
     List<Criteria> andConditions = new ArrayList<>();
+
+    andConditions.add(Criteria.where("id").ne(null));
     if (id != null) {
       andConditions.add(Criteria.where("id").is(id));
     }

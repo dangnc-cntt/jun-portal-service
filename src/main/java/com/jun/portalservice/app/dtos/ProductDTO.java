@@ -1,6 +1,7 @@
 package com.jun.portalservice.app.dtos;
 
-import com.jun.portalservice.domain.entities.mongo.ProductOption;
+import com.jun.portalservice.domain.entities.mongo.Color;
+import com.jun.portalservice.domain.entities.mongo.Size;
 import com.jun.portalservice.domain.entities.types.ProductState;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,17 @@ public class ProductDTO {
 
   private Float discount;
 
-  @NotNull private List<ProductOption> optionList;
+  @NotNull private List<ProductOptionDTO> optionList;
+
+  @Data
+  public static class ProductOptionDTO {
+
+    private Integer id;
+
+    private Color color;
+
+    private Size size;
+
+    private Integer amount;
+  }
 }

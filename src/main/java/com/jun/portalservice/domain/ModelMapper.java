@@ -31,4 +31,8 @@ public interface ModelMapper {
   Product toProduct(ProductDTO dto);
 
   ProductResponse toProductResponse(Product product);
+
+  WarehouseExport toWarehouseExport(WarehouseDTO warehouseDTO);
+
+  WarehouseReceipt toWarehouseReceipt(WarehouseDTO warehouseDTO);
 }

@@ -16,4 +16,6 @@ public class BaseStorage {
   @Autowired protected ProductRepository productRepository;
   @Autowired protected ModelMapper modelMapper;
   @Autowired protected ProductOptionRepository productOptionRepository;
+  @Autowired protected WarehouseExportRepository warehouseExportRepository;
+  @Autowired protected WarehouseReceiptRepository warehouseReceiptRepository;
 }

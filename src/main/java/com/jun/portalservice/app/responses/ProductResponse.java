@@ -19,6 +19,7 @@ public class ProductResponse {
 
   private List<String> imageUrls;
 
+
   private String description;
 
   private ProductState state;

@@ -37,6 +37,10 @@ public class BaseService {
   @Autowired protected SizeRepository sizeRepository;
   @Autowired protected CategoryStorage categoryStorage;
   @Autowired protected CategoryRepository categoryRepository;
+  @Autowired protected WarehouseExportRepository warehouseExportRepository;
+  @Autowired protected WarehouseExportStorage warehouseExportStorage;
+  @Autowired protected WarehouseReceiptStorage warehouseReceiptStorage;
+  @Autowired protected WarehouseReceiptRepository warehouseReceiptRepository;
 
   public long generateSequence(String seqName) {
     Sequence counter =
