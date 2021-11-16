@@ -26,7 +26,6 @@ public class BaseService {
   @Autowired protected AccountRepository accountRepository;
 
   @Autowired protected ConfigRepository configRepository;
-  @Autowired protected BannerStorage bannerStorage;
   @Autowired protected ConfigStorage configStorage;
   @Autowired protected ModelMapper modelMapper;
   @Autowired private MongoOperations mongoOperations;
@@ -41,6 +40,8 @@ public class BaseService {
   @Autowired protected WarehouseExportStorage warehouseExportStorage;
   @Autowired protected WarehouseReceiptStorage warehouseReceiptStorage;
   @Autowired protected WarehouseReceiptRepository warehouseReceiptRepository;
+  @Autowired protected VoucherAccountRepository voucherAccountRepository;
+  @Autowired protected OrderRepository orderRepository;
 
   public long generateSequence(String seqName) {
     Sequence counter =

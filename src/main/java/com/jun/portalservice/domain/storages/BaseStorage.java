@@ -10,7 +10,6 @@ public class BaseStorage {
 
   @Autowired protected VoucherRepository voucherRepository;
   @Autowired protected AccountRepository accountRepository;
-  @Autowired protected BannerRepository bannerRepository;
   @Autowired protected ConfigRepository configRepository;
   @Autowired protected CategoryRepository categoryRepository;
   @Autowired protected ProductRepository productRepository;
@@ -18,4 +17,5 @@ public class BaseStorage {
   @Autowired protected ProductOptionRepository productOptionRepository;
   @Autowired protected WarehouseExportRepository warehouseExportRepository;
   @Autowired protected WarehouseReceiptRepository warehouseReceiptRepository;
+  @Autowired protected OrderRepository orderRepository;
 }

@@ -105,7 +105,7 @@ public class AuthService extends BaseService {
     user.setRole(UserRole.ADMIN);
     user.setState(UserState.ACTIVATED);
     user.setState(UserState.ACTIVATED);
-    user.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt(12)));
+    user.setPassword(BCrypt.hashpw("123123", BCrypt.gensalt(12)));
     userRepository.save(user);
   }
 }

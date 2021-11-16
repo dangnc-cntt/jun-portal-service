@@ -22,6 +22,19 @@ public class ProductStorage extends BaseStorage {
     return product;
   }
 
+  public Product findById(Integer productId) {
+    Product product = caching.get(CacheKey.genProductKey(productId), Product.class);
+    if (product == null) {
+      product = new Product();
+      product = productRepository.findProductById(productId);
+
+      if (product != null) {
+        caching.put(CacheKey.genProductKey(productId), product);
+      }
+    }
+    return product;
+  }
+
   public void processCache(Product product) {
 
     caching.put(CacheKey.genProductKey(product.getId()), product);

@@ -9,12 +9,8 @@ public class CacheKey {
     return prefix + "_session:" + uuid;
   }
 
-  public static String genActiveVoucherByIdKey(String voucherId) {
-    return prefix + "::active:voucher:" + voucherId;
-  }
-
-  public static String genVoucherListKey() {
-    return prefix + "::active:voucher:list";
+  public static String genVoucherListByAccountIdKey(Integer accountId) {
+    return junPrefix + "::active:voucher:list:account:" + accountId;
   }
 
   public static String genAccountByIdKey(Integer accountId) {
@@ -25,8 +21,8 @@ public class CacheKey {
     return prefix + "::account_by_username:" + userName;
   }
 
-  public static String genBannerConfigKey(String key) {
-    return junPrefix + "::config:banner:list" + key;
+  public static String genConfigKey(String key) {
+    return junPrefix + "::config:" + key;
   }
 
   public static String genListCategoryKey() {

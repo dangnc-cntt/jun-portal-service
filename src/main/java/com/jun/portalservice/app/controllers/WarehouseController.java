@@ -24,9 +24,9 @@ public class WarehouseController extends BaseController {
 
   @GetMapping("receipts/{receiptId}")
   public ResponseEntity<WarehouseReceipt> findReceiptById(
-      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer id) {
+      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer receiptId) {
     validateToken(token);
-    return ResponseEntity.ok(warehouseReceiptService.findById(id));
+    return ResponseEntity.ok(warehouseReceiptService.findById(receiptId));
   }
 
   @PostMapping("receipts")
@@ -43,9 +43,9 @@ public class WarehouseController extends BaseController {
 
   @GetMapping("exports/{exportId}")
   public ResponseEntity<WarehouseExport> findExportById(
-      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer id) {
+      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer exportId) {
     validateToken(token);
-    return ResponseEntity.ok(warehouseExportService.findById(id));
+    return ResponseEntity.ok(warehouseExportService.findById(exportId));
   }
 
   @GetMapping("exports")

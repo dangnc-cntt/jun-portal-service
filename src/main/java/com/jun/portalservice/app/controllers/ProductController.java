@@ -3,6 +3,7 @@ package com.jun.portalservice.app.controllers;
 import com.jun.portalservice.app.dtos.ColorDTO;
 import com.jun.portalservice.app.dtos.ProductDTO;
 import com.jun.portalservice.app.dtos.SizeDTO;
+import com.jun.portalservice.app.responses.OptionResponse;
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.app.responses.ProductResponse;
 import com.jun.portalservice.domain.entities.mongo.Color;
@@ -94,5 +95,12 @@ public class ProductController extends BaseController {
       @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer sizeId) {
     validateToken(token);
     return ResponseEntity.ok(productService.findSizeById(sizeId));
+  }
+
+  @GetMapping(path = "option/{productId}")
+  public ResponseEntity<List<OptionResponse>> findOptionByProductId(
+      @RequestHeader(name = "x-jun-portal-token") String token, @PathVariable Integer productId) {
+    validateToken(token);
+    return ResponseEntity.ok(productService.findOptionByProductId(productId));
   }
 }

@@ -4,6 +4,7 @@ import com.jun.portalservice.app.dtos.ColorDTO;
 import com.jun.portalservice.app.dtos.ProductDTO;
 import com.jun.portalservice.app.dtos.SizeDTO;
 import com.jun.portalservice.app.responses.Metadata;
+import com.jun.portalservice.app.responses.OptionResponse;
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.app.responses.ProductResponse;
 import com.jun.portalservice.domain.entities.mongo.Color;
@@ -215,5 +216,9 @@ public class ProductService extends BaseService {
       throw new ResourceNotFoundException("No size found!");
     }
     return colors;
+  }
+
+  public List<OptionResponse> findOptionByProductId(Integer prodId) {
+    return modelMapper.toOptionResponse(productOptionRepository.findByProductId(prodId));
   }
 }

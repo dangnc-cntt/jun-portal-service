@@ -36,7 +36,7 @@ public class Account extends BaseEntity {
   private LocalDateTime confirmedAt;
 
   @Field(name = "address")
-  private LocalDateTime address;
+  private String address;
 
   @Field(name = "gender")
   private Gender gender;

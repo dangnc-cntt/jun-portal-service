@@ -10,5 +10,5 @@ import java.util.List;
 public interface ProductOptionRepository extends MongoResourceRepository<ProductOption, Integer> {
   List<ProductOption> findByProductId(int productId);
 
-  ProductOption findProductOptionById(int id);
+  ProductOption findProductOptionByIdAndProductId(int id, Integer productId);
 }

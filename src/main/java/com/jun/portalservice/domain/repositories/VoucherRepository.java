@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VoucherRepository extends MongoResourceRepository<Voucher, String> {
+public interface VoucherRepository extends MongoResourceRepository<Voucher, Integer> {
 
-  Voucher findVoucherById(String voucherId);
+  Voucher findVoucherById(Integer voucherId);
 
   Page<Voucher> findByCreatedByOrderByCreatedAtDesc(String userId, Pageable pageable);
 

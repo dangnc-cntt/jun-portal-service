@@ -66,9 +66,13 @@ public class WarehouseExportService extends BaseService {
           for (ProductView.Option option : product.getOptions()) {
             ProductOption productOption = optionMap.get(option.getId());
             if (productOption == null) {
-              productOption = productOptionRepository.findProductOptionById(option.getId());
+              productOption =
+                  productOptionRepository.findProductOptionByIdAndProductId(
+                      option.getId(), product.getId());
             }
-            productOption.setAmount(productOption.getAmount() - option.getAmount());
+            productOption.setAmount(
+                (productOption.getAmount() == null ? 0 : productOption.getAmount())
+                    - option.getAmount());
             optionMap.put(productOption.getId(), productOption);
           }
         }

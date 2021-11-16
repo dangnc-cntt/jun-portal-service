@@ -1,13 +1,12 @@
 package com.jun.portalservice.domain;
 
 import com.jun.portalservice.app.dtos.*;
-import com.jun.portalservice.app.responses.AccountResponse;
-import com.jun.portalservice.app.responses.ProductResponse;
-import com.jun.portalservice.app.responses.ProfileResponse;
-import com.jun.portalservice.app.responses.UserResponse;
+import com.jun.portalservice.app.responses.*;
 import com.jun.portalservice.domain.data.TokenInfo;
 import com.jun.portalservice.domain.entities.mongo.*;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ModelMapper {
@@ -35,4 +34,8 @@ public interface ModelMapper {
   WarehouseExport toWarehouseExport(WarehouseDTO warehouseDTO);
 
   WarehouseReceipt toWarehouseReceipt(WarehouseDTO warehouseDTO);
+
+  List<OptionResponse> toOptionResponse(List<ProductOption> productOption);
+
+  Voucher toVoucher(VoucherDTO dto);
 }
