@@ -1,6 +1,7 @@
 package com.jun.portalservice.app.dtos;
 
 import com.jun.portalservice.domain.entities.types.Gender;
+import com.jun.portalservice.domain.entities.types.UserRole;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -29,4 +30,6 @@ public class UserDTO {
   private String avatarUrl;
 
   @NotNull private Gender gender;
+
+  @NotNull private UserRole role;
 }

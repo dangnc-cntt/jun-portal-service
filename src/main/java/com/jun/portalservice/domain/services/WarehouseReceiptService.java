@@ -41,8 +41,8 @@ public class WarehouseReceiptService extends BaseService {
 
       LocalDateTime beforeDate = Helper.convertFromStringToLocalDateTime(gteDate);
       LocalDateTime afterDate = Helper.convertFromStringToLocalDateTime(lteDate);
-      andConditions.add(Criteria.where("giftDay").gte(beforeDate));
-      andConditions.add(Criteria.where("giftDay").lte(afterDate));
+      andConditions.add(Criteria.where("createdAt").gte(beforeDate));
+      andConditions.add(Criteria.where("createdAt").lte(afterDate));
     }
     Query query = new Query();
     Criteria andCriteria = new Criteria();

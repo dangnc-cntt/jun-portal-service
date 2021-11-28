@@ -1,5 +1,6 @@
 package com.jun.portalservice.app.controllers;
 
+import com.jun.portalservice.app.dtos.ExportDTO;
 import com.jun.portalservice.app.dtos.WarehouseDTO;
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.domain.entities.mongo.WarehouseExport;
@@ -37,7 +38,7 @@ public class WarehouseController extends BaseController {
 
   @PostMapping("exports")
   public ResponseEntity<WarehouseExport> createExport(
-      @RequestHeader(name = "x-jun-portal-token") String token, @RequestBody WarehouseDTO dto) {
+      @RequestHeader(name = "x-jun-portal-token") String token, @RequestBody ExportDTO dto) {
     return ResponseEntity.ok(warehouseExportService.create(dto, validateToken(token).getUserId()));
   }
 

@@ -25,7 +25,7 @@ public class ConfigController extends BaseController {
   }
 
   @GetMapping("{configKey}")
-  public ResponseEntity<Config> fillter(
+  public ResponseEntity<Config> findById(
       @RequestHeader(name = "x-jun-portal-token") String token,
       @PathVariable("configKey") String configKey) {
     validateToken(token);
@@ -33,10 +33,17 @@ public class ConfigController extends BaseController {
   }
 
   @PostMapping()
-  public ResponseEntity<Config> fillter(
+  public ResponseEntity<Config> create(
       @RequestHeader(name = "x-jun-portal-token") String token, @RequestBody @Valid ConfigDTO dto) {
     validateToken(token);
     return ResponseEntity.ok(configService.create(dto));
+  }
+
+  @PutMapping()
+  public ResponseEntity<Config> update(
+      @RequestHeader(name = "x-jun-portal-token") String token, @RequestBody @Valid ConfigDTO dto) {
+    validateToken(token);
+    return ResponseEntity.ok(configService.update(dto));
   }
 
   @DeleteMapping("{configKey}")

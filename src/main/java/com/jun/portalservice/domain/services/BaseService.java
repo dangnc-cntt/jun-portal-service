@@ -42,6 +42,8 @@ public class BaseService {
   @Autowired protected WarehouseReceiptRepository warehouseReceiptRepository;
   @Autowired protected VoucherAccountRepository voucherAccountRepository;
   @Autowired protected OrderRepository orderRepository;
+  @Autowired protected ReviewRepository reviewRepository;
+  @Autowired protected BrandRepository brandRepository;
 
   public long generateSequence(String seqName) {
     Sequence counter =

@@ -31,11 +31,13 @@ public interface ModelMapper {
 
   ProductResponse toProductResponse(Product product);
 
-  WarehouseExport toWarehouseExport(WarehouseDTO warehouseDTO);
+  WarehouseExport toWarehouseExport(ExportDTO dto);
 
   WarehouseReceipt toWarehouseReceipt(WarehouseDTO warehouseDTO);
 
   List<OptionResponse> toOptionResponse(List<ProductOption> productOption);
 
   Voucher toVoucher(VoucherDTO dto);
+
+  Brand toBrand(BrandDTO brandDTO);
 }

@@ -41,14 +41,14 @@ public class ProductService extends BaseService {
     if (categoryId != null) {
       andConditions.add(Criteria.where("categoryId").is(categoryId));
     }
+    if (StringUtils.isNotEmpty(name)) {
+      andConditions.add(Criteria.where("name").regex(name, "i"));
+    }
     if (StringUtils.isNotEmpty(code)) {
       andConditions.add(Criteria.where("code").regex(code, "i"));
     }
-    if (StringUtils.isNotEmpty(code)) {
-      andConditions.add(Criteria.where("name").regex(name, "i"));
-    }
     if (isHot != null) {
-      andConditions.add(Criteria.where("name").is(isHot));
+      andConditions.add(Criteria.where("isHot").is(isHot));
     }
 
     Query query = new Query();
@@ -57,8 +57,13 @@ public class ProductService extends BaseService {
     query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
 
     Page<Product> productPage = productRepository.findAll(query, pageable);
+
+    if (productPage == null) {
+      return null;
+    }
+
     List<ProductResponse> productResponses = new ArrayList<>();
-    if (productPage != null && productPage.getContent().size() > 0) {
+    if (productPage.getContent().size() > 0) {
       for (Product product : productPage.getContent()) {
         ProductResponse productResponse = modelMapper.toProductResponse(product);
         List<ProductOption> optionList = productOptionRepository.findByProductId(product.getId());

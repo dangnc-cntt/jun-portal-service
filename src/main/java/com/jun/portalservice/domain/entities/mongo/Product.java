@@ -58,6 +58,9 @@ public class Product extends BaseEntity {
   @Field(name = "created_by")
   private Integer createdBy;
 
+  @Field(name = "brand_id")
+  private Integer brandId;
+
   public void from(ProductDTO dto) {
     setName(dto.getName());
     List<String> list = dto.getImageUrls();
@@ -71,5 +74,6 @@ public class Product extends BaseEntity {
     setCostPrice(dto.getCostPrice());
     setPrice(dto.getPrice());
     setDiscount(dto.getDiscount());
+    setBrandId(dto.getBrandId());
   }
 }

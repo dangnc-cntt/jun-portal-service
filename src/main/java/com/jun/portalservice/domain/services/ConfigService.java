@@ -66,6 +66,19 @@ public class ConfigService extends BaseService {
     }
     return configStorage.save(config);
   }
+  //
+  //  @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
+  //  public Config update(ConfigDTO dto) {
+  //
+  //    Config config = detail(dto.getKey());
+  //    if (config == null) {
+  //      config = modelMapper.toConfig(dto);
+  //      config.setId((int) generateSequence(Config.SEQUENCE_NAME));
+  //    } else {
+  //      config.setValue(dto.getValue());
+  //    }
+  //    return configStorage.save(config);
+  //  }
 
   private void validateValue(ConfigType type, String value) {
     switch (type) {
@@ -113,14 +126,14 @@ public class ConfigService extends BaseService {
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-  public void update(ConfigDTO dto) {
+  public Config update(ConfigDTO dto) {
 
     Config config = detail(dto.getKey());
     if (config == null) {
       throw new ResourceNotFoundException("No config found!");
     }
     config.setValue(dto.getValue());
-    configStorage.save(config);
+    return configStorage.save(config);
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)

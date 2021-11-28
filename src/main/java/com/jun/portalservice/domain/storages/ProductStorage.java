@@ -16,7 +16,7 @@ public class ProductStorage extends BaseStorage {
   public Product save(Product product) {
     product = productRepository.save(product);
 
-    if (product.getState() != ProductState.ACTIVE) {
+    if (product.getState() == ProductState.ACTIVE) {
       processCache(product);
     }
     return product;

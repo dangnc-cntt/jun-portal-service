@@ -19,7 +19,6 @@ public class ProductResponse {
 
   private List<String> imageUrls;
 
-
   private String description;
 
   private ProductState state;
@@ -37,6 +36,8 @@ public class ProductResponse {
   private Float star = 0F;
 
   private Integer createdBy;
+
+  private Integer brandId;
 
   List<ProductOption> optionList;
 }

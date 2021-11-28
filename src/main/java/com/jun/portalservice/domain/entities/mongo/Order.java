@@ -71,7 +71,6 @@ public class Order extends BaseEntity {
 
     private VoucherType type;
   }
-
   //  public void assign(
   //      List<ProductView> productViewList,
   //      Long orderId,

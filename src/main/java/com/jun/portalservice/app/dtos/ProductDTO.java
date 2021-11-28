@@ -32,6 +32,8 @@ public class ProductDTO {
 
   private Float discount;
 
+  @NotNull private Integer brandId;
+
   @NotNull private List<ProductOptionDTO> optionList;
 
   @Data

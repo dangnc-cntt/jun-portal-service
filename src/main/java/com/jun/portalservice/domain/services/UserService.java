@@ -95,7 +95,7 @@ public class UserService extends BaseService {
     user = modelMapper.toUser(userDTO);
     user.setId((int) generateSequence(User.SEQUENCE_NAME));
     user.setPassword(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt(12)));
-    user.setRole(UserRole.USER);
+    user.setRole(userDTO.getRole());
     user.setState(UserState.ACTIVATED);
     user = userRepository.save(user);
     return modelMapper.toUserResponse(user);

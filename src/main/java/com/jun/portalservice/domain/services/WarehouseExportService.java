@@ -1,10 +1,11 @@
 package com.jun.portalservice.domain.services;
 
-import com.jun.portalservice.app.dtos.WarehouseDTO;
+import com.jun.portalservice.app.dtos.ExportDTO;
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.domain.data.ProductView;
 import com.jun.portalservice.domain.entities.mongo.ProductOption;
 import com.jun.portalservice.domain.entities.mongo.WarehouseExport;
+import com.jun.portalservice.domain.entities.types.PaymentMethod;
 import com.jun.portalservice.domain.exceptions.ResourceNotFoundException;
 import com.jun.portalservice.domain.utils.Helper;
 import org.apache.commons.lang3.StringUtils;
@@ -42,8 +43,8 @@ public class WarehouseExportService extends BaseService {
 
       LocalDateTime beforeDate = Helper.convertFromStringToLocalDateTime(gteDate);
       LocalDateTime afterDate = Helper.convertFromStringToLocalDateTime(lteDate);
-      andConditions.add(Criteria.where("giftDay").gte(beforeDate));
-      andConditions.add(Criteria.where("giftDay").lte(afterDate));
+      andConditions.add(Criteria.where("createdAt").gte(beforeDate));
+      andConditions.add(Criteria.where("createdAt").lte(afterDate));
     }
     Query query = new Query();
     Criteria andCriteria = new Criteria();
@@ -54,31 +55,33 @@ public class WarehouseExportService extends BaseService {
     return PageResponse.createFrom(warehouseExports);
   }
 
-  public WarehouseExport create(WarehouseDTO warehouseDTO, int userId) {
-    WarehouseExport warehouseExport = modelMapper.toWarehouseExport(warehouseDTO);
+  public WarehouseExport create(ExportDTO dto, int userId) {
+    WarehouseExport warehouseExport = modelMapper.toWarehouseExport(dto);
     warehouseExport.setId((int) generateSequence(WarehouseExport.SEQUENCE_NAME));
     warehouseExport.setCreatedBy(userId);
     warehouseExport = warehouseExportStorage.save(warehouseExport);
-    if (warehouseDTO.getProducts().size() > 0) {
-      Map<Integer, ProductOption> optionMap = new HashMap<>();
-      for (ProductView product : warehouseExport.getProducts()) {
-        if (product.getOptions() != null && product.getOptions().size() > 0) {
-          for (ProductView.Option option : product.getOptions()) {
-            ProductOption productOption = optionMap.get(option.getId());
-            if (productOption == null) {
-              productOption =
-                  productOptionRepository.findProductOptionByIdAndProductId(
-                      option.getId(), product.getId());
+    if (warehouseExport.getType().equals(PaymentMethod.CASH)) {
+      if (dto.getProducts().size() > 0) {
+        Map<Integer, ProductOption> optionMap = new HashMap<>();
+        for (ProductView product : warehouseExport.getProducts()) {
+          if (product.getOptions() != null && product.getOptions().size() > 0) {
+            for (ProductView.Option option : product.getOptions()) {
+              ProductOption productOption = optionMap.get(option.getId());
+              if (productOption == null) {
+                productOption =
+                    productOptionRepository.findProductOptionByIdAndProductId(
+                        option.getId(), product.getId());
+              }
+              productOption.setAmount(
+                  (productOption.getAmount() == null ? 0 : productOption.getAmount())
+                      - option.getAmount());
+              optionMap.put(productOption.getId(), productOption);
             }
-            productOption.setAmount(
-                (productOption.getAmount() == null ? 0 : productOption.getAmount())
-                    - option.getAmount());
-            optionMap.put(productOption.getId(), productOption);
           }
         }
-      }
-      if (optionMap.size() > 0) {
-        productOptionRepository.saveAll(optionMap.values());
+        if (optionMap.size() > 0) {
+          productOptionRepository.saveAll(optionMap.values());
+        }
       }
     }
     return warehouseExport;

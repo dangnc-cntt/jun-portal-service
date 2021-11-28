@@ -1,6 +1,7 @@
 package com.jun.portalservice.domain.entities.mongo;
 
 import com.jun.portalservice.domain.data.ProductView;
+import com.jun.portalservice.domain.entities.types.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,7 @@ public class WarehouseExport extends BaseEntity {
 
   @Field(name = "products")
   List<ProductView> products;
+
+  @Field(name = "type")
+  private PaymentMethod type;
 }

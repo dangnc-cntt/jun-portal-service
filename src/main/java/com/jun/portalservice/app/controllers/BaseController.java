@@ -14,6 +14,10 @@ public class BaseController {
   @Autowired protected WarehouseReceiptService warehouseReceiptService;
   @Autowired protected WarehouseExportService warehouseExportService;
   @Autowired protected ConfigService configService;
+  @Autowired protected OrderService orderService;
+  @Autowired protected ReviewService reviewService;
+  @Autowired protected BrandService brandService;
+  @Autowired protected StatisticService statisticService;
 
   public TokenInfo validateToken(String token) {
     return authService.validateToken(token);

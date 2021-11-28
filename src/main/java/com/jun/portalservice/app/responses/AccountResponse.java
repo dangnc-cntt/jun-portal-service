@@ -23,7 +23,7 @@ public class AccountResponse {
 
   private LocalDateTime confirmedAt;
 
-  private LocalDateTime address;
+  private String address;
 
   private Gender gender;
 
