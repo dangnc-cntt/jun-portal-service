@@ -4,17 +4,17 @@ spring:
       type: batch
       ack-mode: manual_immediate
       missing-topics-fatal: false
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: 127.0.0.1:9092
     topic:
-      replication-factor: ${KAFKA_REPLICATION_FACTOR}
-      num-partitions: ${KAFKA_NUM_PARTITIONS}
+      replication-factor: 1
+      num-partitions: 1
     producer:
       acks: all
       retries: 100
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
-        schema.registry.url: ${SCHEMA_REGISTRY_URL}
+        schema.registry.url: http://127.0.0.1:8081
         specific.avro.reader: true
       template:
         default-topic: test
@@ -27,7 +27,7 @@ spring:
         request:
           timeout:
             ms: 12000000
-        schema.registry.url: ${SCHEMA_REGISTRY_URL}
+        schema.registry.url: http://127.0.0.1:8081
         specific.avro.reader: true
       max-poll-records: 300
       fetch-max-wait: 10000 # 10s
@@ -35,24 +35,23 @@ spring:
       group-id: "jun-portal-service"
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: mongodb://localhost/jun_db?replicaSet=rs0
     web:
       pageable:
         size-parameter: size
         page-parameter: page
-        default-page-size: ${SIZE}
+        default-page-size: 10
         max-page-size: 100
       sort:
         sort-parameter: sort
-debug: ${DEBUG}
+debug: true
 server:
-  port: ${PORT}
+  port: 8092
   error:
     include-stacktrace: on_trace_param
 
 jwt:
-  secret: ${JWT_SECRET}
-  token-expire-time: ${JWT_TOKEN_EXPIRE_TIME}
-  token-refresh-expire-time: ${JWT_TOKEN_REFRESH_EXPIRE_TIME}
-
+  secret: abajihi3hi234hihi3f09acn
+  token-expire-time: 7200
+  token-refresh-expire-time: 1296000
 
