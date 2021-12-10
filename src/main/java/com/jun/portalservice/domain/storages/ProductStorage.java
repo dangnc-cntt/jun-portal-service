@@ -22,6 +22,17 @@ public class ProductStorage extends BaseStorage {
     return product;
   }
 
+  public List<Product> saveAll(List<Product> products) {
+    products = productRepository.saveAll(products);
+
+    for (Product product : products) {
+      if (product.getState() == ProductState.ACTIVE) {
+        processCache(product);
+      }
+    }
+    return products;
+  }
+
   public Product findById(Integer productId) {
     Product product = caching.get(CacheKey.genProductKey(productId), Product.class);
     if (product == null) {

@@ -46,6 +46,14 @@ public class BrandService extends BaseService {
     return brand;
   }
 
+  public List<Brand> findAll() {
+    List<Brand> brands = brandRepository.findAll();
+    if (brands.size() == 0) {
+      throw new ResourceNotFoundException("No brand found!");
+    }
+    return brands;
+  }
+
   public Brand create(BrandDTO dto) {
     Brand brand = modelMapper.toBrand(dto);
     brand.setId((int) generateSequence(Brand.SEQUENCE_NAME));

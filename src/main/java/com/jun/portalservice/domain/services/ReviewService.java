@@ -96,7 +96,7 @@ public class ReviewService extends BaseService {
     }
     List<Product> productList = new ArrayList<>(productMap.values());
     if (productList != null || productList.size() > 0) {
-      productRepository.saveAll(productList);
+      productStorage.saveAll(productList);
     }
   }
 

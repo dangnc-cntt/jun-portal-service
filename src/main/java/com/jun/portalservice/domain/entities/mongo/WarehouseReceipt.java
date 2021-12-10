@@ -1,5 +1,6 @@
 package com.jun.portalservice.domain.entities.mongo;
 
+import com.jun.portalservice.app.dtos.WarehouseDTO;
 import com.jun.portalservice.domain.data.ProductView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,10 @@ public class WarehouseReceipt extends BaseEntity {
 
   @Field(name = "products")
   List<ProductView> products;
+
+  public void assign(WarehouseDTO dto){
+    description = dto.getDescription();
+    products = dto.getProducts();
+  }
+
 }

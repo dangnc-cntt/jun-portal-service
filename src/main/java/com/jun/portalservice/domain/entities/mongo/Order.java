@@ -52,6 +52,7 @@ public class Order extends BaseEntity {
     private Integer id;
     private String name;
     private String code;
+    private List<String> imageUrls;
     private Float costPrice;
     private Float price;
     private Float discount;

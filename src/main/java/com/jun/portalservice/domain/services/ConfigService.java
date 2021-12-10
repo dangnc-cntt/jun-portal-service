@@ -57,13 +57,14 @@ public class ConfigService extends BaseService {
   @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
   public Config create(ConfigDTO dto) {
 
-    Config config = detail(dto.getKey());
+    Config config = configRepository.findConfigByKey(dto.getKey());
     if (config == null) {
       config = modelMapper.toConfig(dto);
       config.setId((int) generateSequence(Config.SEQUENCE_NAME));
-    } else {
-      config.setValue(dto.getValue());
+      config.setType(dto.getType());
     }
+    config.setValue(dto.getValue());
+
     return configStorage.save(config);
   }
   //

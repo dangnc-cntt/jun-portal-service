@@ -17,9 +17,9 @@ public interface OrderRepository extends MongoResourceRepository<Order, Long> {
 
   Order findOrderById(Long id);
 
-  List<Order> findByCreatedAtIsAfterAndCreatedAtIsBeforeOrderByCreatedAt(
+  List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqualOrderByCreatedAt(
       LocalDateTime gte, LocalDateTime lte);
 
-  Page<Order> findByCreatedAtIsAfterAndCreatedAtIsBeforeOrderByCreatedAt(
+  Page<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqualOrderByCreatedAt(
       LocalDateTime gte, LocalDateTime lte, Pageable pageable);
 }

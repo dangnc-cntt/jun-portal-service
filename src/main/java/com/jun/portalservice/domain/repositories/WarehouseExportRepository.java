@@ -9,6 +9,7 @@ import java.util.List;
 public interface WarehouseExportRepository
     extends MongoResourceRepository<WarehouseExport, Integer> {
   WarehouseExport findWarehouseExportById(Integer id);
+  WarehouseExport findByOrderId(Long orderId);
 
   List<WarehouseExport> findByCreatedAtIsAfterAndCreatedAtIsBeforeOrderByCreatedAt(
       LocalDateTime gte, LocalDateTime lte);

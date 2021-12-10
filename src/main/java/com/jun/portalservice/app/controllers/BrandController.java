@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("v1/portal/brands")
@@ -20,6 +21,13 @@ public class BrandController extends BaseController {
       Pageable pageable) {
     validateToken(token);
     return ResponseEntity.ok(brandService.filter(name, id, pageable));
+  }
+
+  @GetMapping("all")
+  public ResponseEntity<List<Brand>> findAll(
+      @RequestHeader(name = "x-jun-portal-token") String token) {
+    validateToken(token);
+    return ResponseEntity.ok(brandService.findAll());
   }
 
   @GetMapping("{brandId}")

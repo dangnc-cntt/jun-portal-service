@@ -3,9 +3,9 @@ package com.jun.portalservice.domain.services;
 import com.jun.portalservice.app.dtos.ExportDTO;
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.domain.data.ProductView;
+import com.jun.portalservice.domain.entities.mongo.Order;
 import com.jun.portalservice.domain.entities.mongo.ProductOption;
 import com.jun.portalservice.domain.entities.mongo.WarehouseExport;
-import com.jun.portalservice.domain.entities.types.PaymentMethod;
 import com.jun.portalservice.domain.exceptions.ResourceNotFoundException;
 import com.jun.portalservice.domain.utils.Helper;
 import org.apache.commons.lang3.StringUtils;
@@ -59,9 +59,25 @@ public class WarehouseExportService extends BaseService {
     WarehouseExport warehouseExport = modelMapper.toWarehouseExport(dto);
     warehouseExport.setId((int) generateSequence(WarehouseExport.SEQUENCE_NAME));
     warehouseExport.setCreatedBy(userId);
-    warehouseExport = warehouseExportStorage.save(warehouseExport);
-    if (warehouseExport.getType().equals(PaymentMethod.CASH)) {
-      if (dto.getProducts().size() > 0) {
+    List<ProductView> productView = new ArrayList<>();
+    if (warehouseExport.getIsOnline()) {
+      warehouseExport.setOrderId(dto.getOrderId());
+
+      Order order = orderRepository.findOrderById(dto.getOrderId());
+
+      if (order == null) {
+        throw new ResourceNotFoundException("No order found!");
+      }
+
+      for (Order.ProductView product : order.getProducts()) {
+        ProductView view = new ProductView();
+        view.assign(product);
+        productView.add(view);
+      }
+      warehouseExport.setProducts(productView);
+
+    } else {
+      if (dto.getProducts() == null || dto.getProducts().size() > 0) {
         Map<Integer, ProductOption> optionMap = new HashMap<>();
         for (ProductView product : warehouseExport.getProducts()) {
           if (product.getOptions() != null && product.getOptions().size() > 0) {
@@ -84,6 +100,9 @@ public class WarehouseExportService extends BaseService {
         }
       }
     }
+
+    warehouseExport = warehouseExportStorage.save(warehouseExport);
+
     return warehouseExport;
   }
 

@@ -29,6 +29,9 @@ public class WarehouseExport extends BaseEntity {
   @Field(name = "products")
   List<ProductView> products;
 
-  @Field(name = "type")
-  private PaymentMethod type;
+  @Field(name = "is_online")
+  private Boolean isOnline;
+
+  @Field(name = "order_id")
+  private Long orderId;
 }

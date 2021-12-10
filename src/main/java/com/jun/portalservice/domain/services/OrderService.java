@@ -2,8 +2,11 @@ package com.jun.portalservice.domain.services;
 
 import com.jun.portalservice.app.responses.PageResponse;
 import com.jun.portalservice.domain.entities.mongo.Order;
+import com.jun.portalservice.domain.entities.mongo.WarehouseExport;
 import com.jun.portalservice.domain.entities.types.OrderState;
+import com.jun.portalservice.domain.exceptions.BadRequestException;
 import com.jun.portalservice.domain.exceptions.ResourceNotFoundException;
+import com.jun.portalservice.domain.repositories.WarehouseExportRepository;
 import com.jun.portalservice.domain.utils.Helper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -51,6 +54,19 @@ public class OrderService extends BaseService {
     return PageResponse.createFrom(orders);
   }
 
+  public List<Order> findOrder(){
+    List<Criteria> andConditions = new ArrayList<>();
+    andConditions.add(Criteria.where("state").ne(OrderState.DELIVERY));
+    andConditions.add(Criteria.where("state").ne(OrderState.COMPLETED));
+
+    Query query = new Query();
+    Criteria andCriteria = new Criteria();
+    query.addCriteria(andCriteria.andOperator((andConditions.toArray(new Criteria[0]))));
+    query.with(Sort.by(Sort.Direction.DESC, "id"));
+
+    return orderRepository.findAll(query);
+  }
+
   public Order findById(long orderId) {
     Order order = orderRepository.findOrderById(orderId);
     if (order == null) {
@@ -60,14 +76,32 @@ public class OrderService extends BaseService {
     return order;
   }
 
-  public Order update(long orderId, OrderState state) {
+  public Order update(long orderId) {
     Order order = orderRepository.findOrderById(orderId);
     if (order == null) {
       throw new ResourceNotFoundException("No order found");
     }
 
-    order.setState(state);
-
+    switch (order.getState()) {
+      case VPN_UNPAID:
+        order.setState(OrderState.NEW);
+        break;
+      case NEW:
+        order.setState(OrderState.CONFIRMED);
+        break;
+      case CONFIRMED:
+        WarehouseExport export = warehouseExportRepository.findByOrderId(orderId);
+        if (export == null){
+          throw new ResourceNotFoundException("Create warehouse export before delivery");
+        }
+        order.setState(OrderState.DELIVERY);
+        break;
+      case DELIVERY:
+        order.setState(OrderState.COMPLETED);
+        break;
+      case COMPLETED:
+        throw new BadRequestException("This order is completed!");
+    }
     return orderRepository.save(order);
   }
 

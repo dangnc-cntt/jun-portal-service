@@ -1,5 +1,6 @@
 package com.jun.portalservice.app.dtos;
 
+import com.jun.portalservice.domain.entities.types.ConfigType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -13,4 +14,6 @@ public class ConfigDTO {
   private String key;
 
   @NotNull private String value;
+
+  @NotNull private ConfigType type;
 }

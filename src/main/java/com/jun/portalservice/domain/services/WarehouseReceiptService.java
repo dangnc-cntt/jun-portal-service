@@ -83,11 +83,47 @@ public class WarehouseReceiptService extends BaseService {
     return warehouseReceipt;
   }
 
+  public WarehouseReceipt update(WarehouseDTO warehouseDTO, int id) {
+    WarehouseReceipt warehouseReceipt = warehouseReceiptRepository.findWarehouseReceiptById(id);
+    if (warehouseReceipt == null){
+      throw new ResourceNotFoundException("No warehouse receipt found");
+    }
+
+    warehouseReceipt.setId((int) generateSequence(WarehouseReceipt.SEQUENCE_NAME));
+    if (warehouseDTO.getProducts().size() > 0) {
+      Map<Integer, ProductOption> optionMap = new HashMap<>();
+      for (ProductView product : warehouseReceipt.getProducts()) {
+        if (product.getOptions() != null && product.getOptions().size() > 0) {
+          for (ProductView.Option option : product.getOptions()) {
+            ProductOption productOption = optionMap.get(option.getId());
+            if (productOption == null) {
+              productOption =
+                  productOptionRepository.findProductOptionByIdAndProductId(
+                      option.getId(), product.getId());
+            }
+            productOption.setAmount(
+                (productOption.getAmount() == null ? 0 : productOption.getAmount())
+                    + option.getAmount());
+            optionMap.put(productOption.getId(), productOption);
+          }
+        }
+      }
+      if (optionMap.size() > 0) {
+        productOptionRepository.saveAll(optionMap.values());
+      }
+    }
+    warehouseReceipt.assign(warehouseDTO);
+    warehouseReceipt = warehouseReceiptRepository.save(warehouseReceipt);
+
+    return warehouseReceipt;
+  }
+
   public WarehouseReceipt findById(Integer id) {
     WarehouseReceipt warehouseReceipt = warehouseReceiptRepository.findWarehouseReceiptById(id);
     if (warehouseReceipt == null) {
       throw new ResourceNotFoundException("No Warehouse Receipt found!");
     }
+
     return warehouseReceipt;
   }
 }

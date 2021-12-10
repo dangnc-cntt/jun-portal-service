@@ -107,7 +107,7 @@ public class UserService extends BaseService {
       throw new AuthenticationException("Access rights: ADMIN");
     }
     User user = userRepository.findUserById(userId);
-    if (user != null) {
+    if (user == null) {
       throw new ResourceNotFoundException("User " + userId + " not found");
     }
 

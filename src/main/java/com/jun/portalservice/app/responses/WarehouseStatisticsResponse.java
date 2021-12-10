@@ -5,14 +5,29 @@ import com.jun.portalservice.domain.entities.mongo.ProductOption;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class WarehouseStatisticsResponse {
-  private Integer receipt = 0;
-  private Integer export = 0;
+  private Amount amount = new Amount();
   private PageResponse<ProductStatistic> products;
+  private List<Day> days = new ArrayList<>();
+
+  @Data
+  @NoArgsConstructor
+  public static class Day {
+    private String date;
+    private Amount amount;
+  }
+
+  @Data
+  @NoArgsConstructor
+  public static class Amount {
+    private Integer receipt = 0;
+    private Integer export = 0;
+  }
 
   @Data
   @NoArgsConstructor

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("v1/reviews")
+@RequestMapping("v1/portal/reviews")
 public class ReviewController extends BaseController {
 
   @GetMapping()

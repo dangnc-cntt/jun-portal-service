@@ -1,7 +1,6 @@
 package com.jun.portalservice.app.dtos;
 
 import com.jun.portalservice.domain.data.ProductView;
-import com.jun.portalservice.domain.entities.types.PaymentMethod;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,9 @@ import java.util.List;
 public class ExportDTO {
   @NotNull private String description;
 
-  @NotNull private List<ProductView> products;
+  private List<ProductView> products;
 
-  @NotNull private PaymentMethod type;
+  @NotNull private Boolean isOnline;
+
+  private Long orderId;
 }
